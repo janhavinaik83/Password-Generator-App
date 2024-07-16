@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:password_generator_app/main.dart';
 
 class UserChoice extends StatefulWidget {
   final String title;
@@ -12,225 +11,219 @@ class UserChoice extends StatefulWidget {
   @override
   _UserChoiceState createState() => _UserChoiceState();
 }
+
 class _UserChoiceState extends State<UserChoice> {
   TextEditingController uppercase = TextEditingController();
   TextEditingController lowercase = TextEditingController();
   TextEditingController number = TextEditingController();
   TextEditingController symbol = TextEditingController();
   TextEditingController length = TextEditingController();
-  final controller = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   void dispose() {
-    controller.dispose();
+    uppercase.dispose();
+    lowercase.dispose();
+    number.dispose();
+    symbol.dispose();
+    length.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-            // backgroundColor: Color(0xFFFF57AC),
-            //Color(0xFFFF6D91),
-            appBar: AppBar(
-              backgroundColor: Color(0xFF006064),
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: Colors.white,
-                ),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
-                  return MyApp();
-                })),
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xFF006064),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.white,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: Text(widget.title),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/img45.jpg"),
+                fit: BoxFit.cover,
               ),
-              title: Text("User Choice Password"),
-              centerTitle: true,
             ),
-            body: Center(
-                child: Container(
-                  decoration: BoxDecoration(
-              image: new DecorationImage(image: new AssetImage("images/img45.jpg"),
-              fit: BoxFit.cover,),
-            ),
-              
-              child: Container(
-                padding: EdgeInsets.all(32),
-                
-                 child: Center(
-                  child: ListView(
-                    
+            padding: EdgeInsets.all(32),
+            child: Center(
+              child: ListView(
+                children: [
+                  Column(
                     children: [
-                   
-                Column(
-                  
-                  children: [
-                    
-                        Image(image: new AssetImage('images/passy.jpg'),width:200,
-                height:150),
-                const SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      controller: uppercase,
-                      decoration: InputDecoration(
+                      Image.asset('images/passy.jpg', width: 200, height: 150),
+                      const SizedBox(height: 15),
+                      TextFormField(
+                        controller: uppercase,
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: "Uppercase",
-                          hintText: "Enter Uppercase letter"),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      controller: lowercase,
-                      decoration: InputDecoration(
+                          hintText: "Enter Uppercase letters",
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      TextFormField(
+                        controller: lowercase,
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: "Lowercase",
-                          hintText: "Enter Lowercase letter"),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(children: [
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          controller: number,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Number",
-                              hintText: "Enter Number"),
+                          hintText: "Enter Lowercase letters",
                         ),
                       ),
-                      Container(width: 5.0),
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          controller: symbol,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Symbol",
-                              hintText: "Enter Special Symbol"),
-                        ),
+                      const SizedBox(height: 15),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: TextFormField(
+                              controller: number,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: "Number",
+                                hintText: "Enter Numbers",
+                              ),
+                            ),
+                          ),
+                          Container(width: 5.0),
+                          Expanded(
+                            flex: 1,
+                            child: TextFormField(
+                              controller: symbol,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: "Symbol",
+                                hintText: "Enter Special Symbols",
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ]),
-                    Row(
-                      children: [
-                        Expanded(flex: 1, child: Text("Length")),
-                        const SizedBox(
-                          height: 90,
-                        ),
-                        Expanded(
+                      const SizedBox(height: 15),
+                      Row(
+                        children: [
+                          Expanded(flex: 1, child: Text("Length")),
+                          const SizedBox(width: 5),
+                          Expanded(
                             flex: 3,
                             child: TextFormField(
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                               ),
                               controller: length,
-                            )),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text("Random Password Generator",style:TextStyle(fontSize: 25,color: Color(0xFFB71C1C),
-                fontStyle: FontStyle.italic),),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    TextField(
-                        controller: controller,
+                              keyboardType: TextInputType.number,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        "Random Password Generator",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Color(0xFFB71C1C),
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      TextField(
+                        controller: passwordController,
                         readOnly: true,
                         enableInteractiveSelection: false,
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            suffixIcon: IconButton(
-                                icon: Icon(Icons.copy),
-                                onPressed: () {
-                                  final data =
-                                      ClipboardData(text: controller.text);
-                                  Clipboard.setData(data);
+                          border: OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.copy),
+                            onPressed: () {
+                              final data = ClipboardData(text: passwordController.text);
+                              Clipboard.setData(data);
 
-                                  Fluttertoast.showToast(
-                                      msg: "Copied",
-                                      backgroundColor: Colors.red,
-                                      textColor: Colors.white);
-                                }))),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: buildButton()),
-                        Container(width: 9.0),
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(primary: 
-       Color(0xFFB71C1C)),
+                              Fluttertoast.showToast(
+                                msg: "Copied",
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      Row(
+                        children: [
+                          Expanded(child: buildButton()),
+                          SizedBox(width: 9.0),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFFB71C1C),
+                              ),
                               child: Text("Reset"),
                               onPressed: () {
                                 setState(() {
                                   reset();
                                 });
-                              }),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ])),
-     ) ))));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
-  String generatePassword({
-    required bool islowercase,
-    required bool isupercase,
-    required bool isnumber,
-    required bool isspecial,
-  }) {
+  String generatePassword() {
     String chars = '';
-    final lengths = int.parse(length.text);
-    final letterlower = uppercase.text;
-    final letterupper = lowercase.text;
-    final numbers = int.parse(number.text);
-    final special = symbol.text;
+    final int lengths = int.tryParse(length.text) ?? 0;
+    final String letterLower = lowercase.text;
+    final String letterUpper = uppercase.text;
+    final String numbers = number.text;
+    final String special = symbol.text;
 
-    chars += (islowercase ? '$letterlower' : '');
+    chars += letterLower;
+    chars += letterUpper;
+    chars += numbers;
+    chars += special;
 
-    chars += (isupercase ? '$letterupper' : '');
-
-    chars += (isnumber ? '$numbers' : '');
-
-    chars += (isspecial ? '$special' : '');
+    if (chars.isEmpty) return '';
 
     return List.generate(lengths, (index) {
       final indexRandom = Random.secure().nextInt(chars.length);
-
       return chars[indexRandom];
-    }).toSet().join('');
+    }).join('');
   }
 
   void reset() {
     uppercase.text = '';
     lowercase.text = '';
-    symbol.text = '';
     number.text = '';
+    symbol.text = '';
     length.text = '';
-    controller.text = '';
+    passwordController.text = '';
   }
 
   Widget buildButton() {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: 
-       Color(0xFF006064)),
+      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF006064)),
       child: Text("Generate Password"),
       onPressed: () {
-        final password = generatePassword(
-            islowercase: true,
-            isupercase: true,
-            isnumber: true,
-            isspecial: true);
-        controller.text = password;
+        final password = generatePassword();
+        passwordController.text = password;
       },
     );
   }
